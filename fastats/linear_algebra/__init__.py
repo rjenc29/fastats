@@ -1,5 +1,5 @@
 
-from fastats.linear_algebra.lu import lu, lu_inplace
+from fastats.linear_algebra.lu import lu, lu_inplace, lu_method2
 from fastats.linear_algebra.ols import (
     ols, ols_cholesky, ols_qr, ols_svd, r_squared,
     sum_of_squared_residuals, fitted_values, residuals,

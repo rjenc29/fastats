@@ -91,6 +91,21 @@ def lu(A):
     return L, U
 
 
+# TODO : rename me
+
+def lu_method2(A):
+    """
+    """
+    U = A.astype(np.float64)
+    n = A.shape[1]
+    L = np.eye(n)
+    for k in range(n - 1):
+        for j in range(k + 1, n):
+            L[j, k] = U[j, k] / U[k, k]
+            U[j, k:n] -= L[j, k] * U[k, k:n]
+    return L, U
+
+
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])

@@ -5,11 +5,12 @@ import numpy as np
 from numpy.testing import assert_allclose
 from pytest import approx
 
-from fastats.linear_algebra import lu, lu_inplace
+from fastats.linear_algebra import lu, lu_inplace, lu_method2
 from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 
 
 lu_jit = convert_to_jit(lu)
+lu_method2_jit = convert_to_jit(lu_method2)
 
 
 class LUDecompValidator:
@@ -40,9 +41,23 @@ class LUDecompValidator:
 
         assert_allclose(raw_L @ raw_U, self._A)
 
-    def test_lu_outputs_numba(self):
+    def test_lu_method2_outputs_numpy(self):
+        L, U = lu_method2(self._A)
 
+        assert L.tolist() == self.L
+        assert U.tolist() == self.U
+        assert_allclose(L @ U, self._A)
+
+    def test_lu_outputs_numba(self):
         L, U = lu_jit(self._A)
+
+        assert L.tolist() == self.L
+        assert U.tolist() == self.U
+
+        assert_allclose(L @ U, self._A)
+
+    def test_lu_method2_outputs_numba(self):
+        L, U = lu_method2_jit(self._A)
 
         assert L.tolist() == self.L
         assert U.tolist() == self.U
